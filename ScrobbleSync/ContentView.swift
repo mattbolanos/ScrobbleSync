@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  ScrobbleSync
-//
-//  Created by Matt Bolaños on 12/13/25.
-//
-
 import SwiftUI
 
 struct ContentView: View {
@@ -13,7 +6,7 @@ struct ContentView: View {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Text("Hello world!")
         }
         .padding()
     }
