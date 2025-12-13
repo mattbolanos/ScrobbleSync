@@ -26,8 +26,8 @@ struct OnboardingView: View {
                         )
                         .frame(width: 80, height: 80)
                     
-                    Image(systemName: "arrow.triangle.2.circlepath")
-                        .font(.system(size: 36, weight: .semibold))
+                    Image(systemName: "music.note.square.stack.fill")
+                        .font(.system(size: 44, weight: .semibold))
                         .foregroundStyle(.white)
                 }
                 .shadow(color: Theme.Colors.accentGreen.opacity(0.3), radius: 16, x: 0, y: 8)
