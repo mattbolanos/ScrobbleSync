@@ -1,17 +1,20 @@
-//
-//  ScrobbleSyncApp.swift
-//  ScrobbleSync
-//
-//  Created by Matt Bolaños on 12/13/25.
-//
-
 import SwiftUI
 
 @main
 struct ScrobbleSyncApp: App {
+    @State private var appState = AppState()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            Group {
+                if appState.isOnboarded {
+                    MainTabView(appState: appState)
+                } else {
+                    OnboardingView(appState: appState)
+                }
+            }
+            .animation(Theme.Animation.spring, value: appState.isOnboarded)
+            .preferredColorScheme(.dark)
         }
     }
 }
