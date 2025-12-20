@@ -6,6 +6,7 @@ struct SettingsView: View {
     @Bindable var appState: AppState
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
+    @State private var showDisableSyncAlert = false
     
     var body: some View {
         List {
@@ -48,7 +49,13 @@ struct SettingsView: View {
             
             // Sync Preferences Section
             Section {
-                Toggle(isOn: $appState.backgroundSyncEnabled) {
+                Button {
+                    if appState.backgroundSyncEnabled {
+                        showDisableSyncAlert = true
+                    } else {
+                        appState.backgroundSyncEnabled = true
+                    }
+                } label: {
                     HStack(spacing: Theme.Spacing.md) {
                         ZStack {
                             RoundedRectangle(cornerRadius: 8, style: .continuous)
@@ -61,9 +68,15 @@ struct SettingsView: View {
                         }
                         
                         Text("Background Sync")
+                            .foregroundStyle(Theme.Colors.primaryText)
+                        
+                        Spacer()
+                        
+                        Text(appState.backgroundSyncEnabled ? "Enabled" : "Disabled")
+                            .font(.subheadline)
+                            .foregroundStyle(appState.backgroundSyncEnabled ? Theme.Colors.accentGreen : Theme.Colors.secondaryText)
                     }
                 }
-                .tint(Theme.Colors.accentGreen)
             } header: {
                 Text("Sync Preferences")
             } footer: {
@@ -132,6 +145,14 @@ struct SettingsView: View {
         }
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.large)
+        .alert("Disable Background Sync?", isPresented: $showDisableSyncAlert) {
+            Button("Cancel", role: .cancel) { }
+            Button("Disable", role: .destructive) {
+                appState.backgroundSyncEnabled = false
+            }
+        } message: {
+            Text("Automatic scrobbling requires background sync. Your listening history won't be sent to Last.fm until you open the app.")
+        }
     }
     
     // MARK: - Account Row
