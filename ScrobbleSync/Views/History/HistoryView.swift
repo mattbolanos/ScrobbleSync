@@ -118,10 +118,7 @@ struct HistoryView: View {
         .scrollContentBackground(.hidden)
         .refreshable {
             isRefreshing = true
-            appState.syncNow()
-            
-            // Wait for sync to complete
-            try? await Task.sleep(for: .seconds(1.5))
+            await appState.syncNow()
             isRefreshing = false
         }
     }
@@ -131,7 +128,7 @@ struct HistoryView: View {
 
 #Preview {
     let appState = AppState()
-    appState.scrobbles = MockData.scrobbles
+    appState.scrobbles = PreviewData.scrobbles
     
     return HistoryView(appState: appState)
 }

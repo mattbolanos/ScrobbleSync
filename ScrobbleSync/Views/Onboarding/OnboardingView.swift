@@ -85,7 +85,9 @@ struct OnboardingView: View {
             // Get Started button
             VStack(spacing: Theme.Spacing.md) {
                 Button {
-                    appState.completeOnboarding()
+                    Task {
+                        await appState.completeOnboarding()
+                    }
                 } label: {
                     Text(appState.canGetStarted ? "Get Started" : "Connect services to continue")
                         .font(.headline)

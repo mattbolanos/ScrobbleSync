@@ -106,12 +106,14 @@ final class AppState {
         }
     }
     
-    func completeOnboarding() {
+    @MainActor
+    func completeOnboarding() async {
         withAnimation(Theme.Animation.spring) {
             isOnboarded = true
-            scrobbles = MockData.scrobbles
-            lastSyncDate = Date()
         }
+        
+        // Fetch initial data from Apple Music
+        await fetchRecentlyPlayed()
     }
     
     func resetOnboarding() {
@@ -126,26 +128,47 @@ final class AppState {
         }
     }
     
-    func syncNow() {
+    @MainActor
+    func syncNow() async {
         guard !isSyncing else { return }
         
         withAnimation(Theme.Animation.quick) {
             isSyncing = true
         }
         
-        // Simulate sync delay
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+        await fetchRecentlyPlayed()
+        
+        withAnimation(Theme.Animation.quick) {
+            isSyncing = false
+        }
+    }
+    
+    @MainActor
+    private func fetchRecentlyPlayed() async {
+        print("📱 [AppState] Starting fetch...")
+        do {
+            let recentTracks = try await musicKitService.fetchRecentlyPlayed()
+            print("📱 [AppState] Got \(recentTracks.count) tracks from service")
+            
             withAnimation(Theme.Animation.quick) {
-                self.isSyncing = false
-                self.lastSyncDate = Date()
+                // Merge new tracks with existing, avoiding duplicates based on track+artist+timestamp
+                let existingKeys = Set(scrobbles.map { "\($0.trackName)-\($0.artistName)-\($0.timestamp.timeIntervalSince1970)" })
                 
-                // Randomly resolve some pending/failed scrobbles for demo
-                for index in self.scrobbles.indices {
-                    if self.scrobbles[index].status.isPending {
-                        self.scrobbles[index].status = Bool.random() ? .success : .failed("Network timeout")
-                    }
+                let newScrobbles = recentTracks.filter { track in
+                    let key = "\(track.trackName)-\(track.artistName)-\(track.timestamp.timeIntervalSince1970)"
+                    return !existingKeys.contains(key)
                 }
+                
+                print("📱 [AppState] Adding \(newScrobbles.count) new scrobbles (filtered from \(recentTracks.count))")
+                
+                scrobbles.insert(contentsOf: newScrobbles, at: 0)
+                scrobbles.sort { $0.timestamp > $1.timestamp }
+                lastSyncDate = Date()
+                
+                print("📱 [AppState] Total scrobbles now: \(scrobbles.count)")
             }
+        } catch {
+            print("❌ [AppState] Failed to fetch: \(error)")
         }
     }
     

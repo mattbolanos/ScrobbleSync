@@ -46,7 +46,7 @@ struct MainTabView: View {
         appState.isOnboarded = true
         appState.lastfmConnected = true
         appState.lastfmUsername = "mattbolanos"
-        appState.scrobbles = MockData.scrobbles
+        appState.scrobbles = PreviewData.scrobbles
         appState.lastSyncDate = Date().addingTimeInterval(-300)
         return appState
     }())

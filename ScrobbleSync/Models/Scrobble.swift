@@ -35,6 +35,7 @@ struct Scrobble: Identifiable, Hashable {
     let trackName: String
     let artistName: String
     let albumName: String
+    let artworkURL: URL?
     let timestamp: Date
     var status: ScrobbleStatus
     
@@ -43,6 +44,7 @@ struct Scrobble: Identifiable, Hashable {
         trackName: String,
         artistName: String,
         albumName: String,
+        artworkURL: URL? = nil,
         timestamp: Date,
         status: ScrobbleStatus = .success
     ) {
@@ -50,6 +52,7 @@ struct Scrobble: Identifiable, Hashable {
         self.trackName = trackName
         self.artistName = artistName
         self.albumName = albumName
+        self.artworkURL = artworkURL
         self.timestamp = timestamp
         self.status = status
     }

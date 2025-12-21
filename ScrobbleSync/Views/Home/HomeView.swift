@@ -24,7 +24,9 @@ struct HomeView: View {
                     
                     // Sync Now button
                     Button {
-                        appState.syncNow()
+                        Task {
+                            await appState.syncNow()
+                        }
                     } label: {
                         HStack(spacing: Theme.Spacing.sm) {
                             if appState.isSyncing {
@@ -146,7 +148,7 @@ struct HomeView: View {
         appState.isOnboarded = true
         appState.lastfmConnected = true
         appState.lastfmUsername = "mattbolanos"
-        appState.scrobbles = MockData.scrobbles
+        appState.scrobbles = PreviewData.scrobbles
         appState.lastSyncDate = Date().addingTimeInterval(-300)
         return appState
     }())

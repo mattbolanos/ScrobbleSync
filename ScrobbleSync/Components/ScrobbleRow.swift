@@ -12,8 +12,8 @@ struct ScrobbleRow: View {
             onTap?()
         } label: {
             HStack(spacing: Theme.Spacing.md) {
-                // Album art placeholder
-                albumArtPlaceholder
+                // Album art
+                albumArtView
                 
                 // Track info
                 VStack(alignment: .leading, spacing: Theme.Spacing.xxxs) {
@@ -48,6 +48,34 @@ struct ScrobbleRow: View {
     }
     
     // MARK: - Subviews
+    
+    @ViewBuilder
+    private var albumArtView: some View {
+        if let artworkURL = scrobble.artworkURL {
+            AsyncImage(url: artworkURL) { phase in
+                switch phase {
+                case .success(let image):
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                case .failure:
+                    albumArtPlaceholder
+                case .empty:
+                    albumArtPlaceholder
+                        .overlay {
+                            ProgressView()
+                                .scaleEffect(0.5)
+                        }
+                @unknown default:
+                    albumArtPlaceholder
+                }
+            }
+            .frame(width: 44, height: 44)
+            .clipShape(RoundedRectangle(cornerRadius: Theme.CornerRadius.small, style: .continuous))
+        } else {
+            albumArtPlaceholder
+        }
+    }
     
     private var albumArtPlaceholder: some View {
         ZStack {
