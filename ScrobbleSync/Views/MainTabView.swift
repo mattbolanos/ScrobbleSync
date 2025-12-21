@@ -41,14 +41,14 @@ struct MainTabView: View {
 // MARK: - Preview
 
 #Preview {
-    let appState = AppState()
-    appState.isOnboarded = true
-    appState.appleMusicConnected = true
-    appState.lastfmConnected = true
-    appState.lastfmUsername = "mattbolanos"
-    appState.scrobbles = MockData.scrobbles
-    appState.lastSyncDate = Date().addingTimeInterval(-300)
-    
-    return MainTabView(appState: appState)
+    MainTabView(appState: {
+        let appState = AppState()
+        appState.isOnboarded = true
+        appState.lastfmConnected = true
+        appState.lastfmUsername = "mattbolanos"
+        appState.scrobbles = MockData.scrobbles
+        appState.lastSyncDate = Date().addingTimeInterval(-300)
+        return appState
+    }())
 }
 

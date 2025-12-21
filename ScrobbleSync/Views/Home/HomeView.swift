@@ -141,14 +141,14 @@ struct HomeView: View {
 // MARK: - Preview
 
 #Preview {
-    let appState = AppState()
-    appState.isOnboarded = true
-    appState.appleMusicConnected = true
-    appState.lastfmConnected = true
-    appState.lastfmUsername = "mattbolanos"
-    appState.scrobbles = MockData.scrobbles
-    appState.lastSyncDate = Date().addingTimeInterval(-300)
-    
-    return HomeView(appState: appState)
+    HomeView(appState: {
+        let appState = AppState()
+        appState.isOnboarded = true
+        appState.lastfmConnected = true
+        appState.lastfmUsername = "mattbolanos"
+        appState.scrobbles = MockData.scrobbles
+        appState.lastSyncDate = Date().addingTimeInterval(-300)
+        return appState
+    }())
 }
 

@@ -51,15 +51,16 @@ struct OnboardingView: View {
             VStack(spacing: Theme.Spacing.md) {
                 ConnectionCard(
                     title: "Apple Music",
-                    subtitle: appState.appleMusicConnected ? "Connected" : "Tap to connect",
+                    subtitle: appState.appleMusicStatusDescription,
                     systemImage: "music.note",
                     isConnected: appState.appleMusicConnected,
+                    isLoading: appState.isConnectingAppleMusic,
                     accentColor: Theme.Colors.appleMusicPink
                 ) {
-                    if appState.appleMusicConnected {
-                        appState.disconnectAppleMusic()
-                    } else {
-                        appState.connectAppleMusic()
+                    if !appState.appleMusicConnected {
+                        Task {
+                            await appState.connectAppleMusic()
+                        }
                     }
                 }
                 

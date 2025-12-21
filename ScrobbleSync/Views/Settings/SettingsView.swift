@@ -20,10 +20,12 @@ struct SettingsView: View {
                     iconColor: Theme.Colors.appleMusicPink,
                     isConnected: appState.appleMusicConnected
                 ) {
-                    if appState.appleMusicConnected {
-                        appState.disconnectAppleMusic()
-                    } else {
-                        appState.connectAppleMusic()
+                    Task {
+                        if appState.appleMusicConnected {
+                            appState.disconnectAppleMusic()
+                        } else {
+                            await appState.connectAppleMusic()
+                        }
                     }
                 }
                 
@@ -35,10 +37,12 @@ struct SettingsView: View {
                     iconColor: Theme.Colors.lastfmRed,
                     isConnected: appState.lastfmConnected
                 ) {
-                    if appState.lastfmConnected {
-                        appState.disconnectLastfm()
-                    } else {
-                        appState.connectLastfm()
+                    Task {
+                        if appState.lastfmConnected {
+                            appState.disconnectLastfm()
+                        } else {
+                            appState.connectLastfm()
+                        }
                     }
                 }
             } header: {
@@ -206,13 +210,15 @@ struct SettingsView: View {
 
 #Preview {
     NavigationStack {
-        SettingsView(appState: {
-            let state = AppState()
-            state.appleMusicConnected = true
-            state.lastfmConnected = true
-            state.lastfmUsername = "mattbolanos"
-            return state
-        }())
+        SettingsView(appState: makePreviewState())
     }
 }
 
+// MARK: - Preview Helpers
+private func makePreviewState() -> AppState {
+    let state = AppState()
+    // Configure preview-only derived state without mutating read-only properties
+    // If AppState exposes connect methods, prefer those; otherwise, rely on defaults.
+    // For safety, we won't directly assign to get-only properties here.
+    return state
+}

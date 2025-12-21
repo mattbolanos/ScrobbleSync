@@ -4,12 +4,29 @@ import SwiftUI
 
 @Observable
 final class AppState {
+    // MARK: - Services
+    
+    let musicKitService = MusicKitService()
+    
     // MARK: - Onboarding State
     
     var isOnboarded: Bool = false
-    var appleMusicConnected: Bool = false
     var lastfmConnected: Bool = false
     var lastfmUsername: String = ""
+    
+    // MARK: - Apple Music State
+    
+    var appleMusicConnected: Bool {
+        musicKitService.isAuthorized
+    }
+    
+    var isConnectingAppleMusic: Bool {
+        musicKitService.isAuthorizing
+    }
+    
+    var appleMusicStatusDescription: String {
+        musicKitService.statusDescription
+    }
     
     // MARK: - Sync State
     
@@ -63,16 +80,16 @@ final class AppState {
     
     // MARK: - Actions
     
-    func connectAppleMusic() {
-        withAnimation(Theme.Animation.spring) {
-            appleMusicConnected = true
-        }
+    @MainActor
+    func connectAppleMusic() async {
+        await musicKitService.requestAuthorization()
     }
     
+    /// Note: Apple Music authorization cannot be revoked programmatically.
+    /// User must disable in Settings > Privacy > Media & Apple Music
     func disconnectAppleMusic() {
-        withAnimation(Theme.Animation.spring) {
-            appleMusicConnected = false
-        }
+        // Cannot programmatically revoke - just refresh status
+        musicKitService.refreshStatus()
     }
     
     func connectLastfm(username: String = "mattbolanos") {
@@ -100,7 +117,8 @@ final class AppState {
     func resetOnboarding() {
         withAnimation(Theme.Animation.spring) {
             isOnboarded = false
-            appleMusicConnected = false
+            // Note: Apple Music authorization persists and cannot be revoked programmatically
+            musicKitService.refreshStatus()
             lastfmConnected = false
             lastfmUsername = ""
             scrobbles = []

@@ -7,6 +7,7 @@ struct ConnectionCard: View {
     let subtitle: String
     let systemImage: String
     let isConnected: Bool
+    var isLoading: Bool = false
     let accentColor: Color
     let action: () -> Void
     
@@ -43,9 +44,16 @@ struct ConnectionCard: View {
                         .fill(isConnected ? Theme.Colors.successMuted : Theme.Colors.secondaryBackground)
                         .frame(width: 32, height: 32)
                     
-                    Image(systemName: isConnected ? "checkmark" : "plus")
-                        .font(.system(size: 14, weight: .bold))
-                        .foregroundStyle(isConnected ? Theme.Colors.success : Theme.Colors.secondaryText)
+                    if isLoading {
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                            .tint(accentColor)
+                            .scaleEffect(0.7)
+                    } else {
+                        Image(systemName: isConnected ? "checkmark" : "plus")
+                            .font(.system(size: 14, weight: .bold))
+                            .foregroundStyle(isConnected ? Theme.Colors.success : Theme.Colors.secondaryText)
+                    }
                 }
             }
             .padding(Theme.Spacing.lg)
@@ -57,6 +65,7 @@ struct ConnectionCard: View {
             )
         }
         .buttonStyle(.plain)
+        .disabled(isLoading)
         .sensoryFeedback(.impact(flexibility: .soft), trigger: isConnected)
     }
 }
