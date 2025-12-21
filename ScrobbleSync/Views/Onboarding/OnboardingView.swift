@@ -66,15 +66,18 @@ struct OnboardingView: View {
                 
                 ConnectionCard(
                     title: "Last.fm",
-                    subtitle: appState.lastfmConnected ? "@\(appState.lastfmUsername)" : "Tap to connect",
+                    subtitle: appState.lastfmStatusDescription,
                     systemImage: "antenna.radiowaves.left.and.right",
                     isConnected: appState.lastfmConnected,
+                    isLoading: appState.isConnectingLastfm,
                     accentColor: Theme.Colors.lastfmRed
                 ) {
                     if appState.lastfmConnected {
                         appState.disconnectLastfm()
                     } else {
-                        appState.connectLastfm()
+                        Task {
+                            await appState.connectLastfm()
+                        }
                     }
                 }
             }

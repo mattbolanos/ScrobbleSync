@@ -14,7 +14,7 @@ struct ScrobbleSyncApp: App {
                 }
             }
             .animation(Theme.Animation.spring, value: appState.isOnboarded)
-            .preferredColorScheme(.dark)
+            .preferredColorScheme(.none)
         }
     }
 }

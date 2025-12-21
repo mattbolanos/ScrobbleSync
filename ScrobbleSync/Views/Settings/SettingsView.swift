@@ -41,7 +41,7 @@ struct SettingsView: View {
                         if appState.lastfmConnected {
                             appState.disconnectLastfm()
                         } else {
-                            appState.connectLastfm()
+                            await appState.connectLastfm()
                         }
                     }
                 }

@@ -6,6 +6,15 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		83F38ABF2EF7BCDD0002623E /* Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 83F38ABE2EF7BCDD0002623E /* Debug.xcconfig */; };
+		83F38AC02EF7BCDD0002623E /* Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 83F38ABE2EF7BCDD0002623E /* Debug.xcconfig */; };
+		83F38AC12EF7BCDD0002623E /* Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 83F38ABE2EF7BCDD0002623E /* Debug.xcconfig */; };
+		83F38AC52EF7BEE30002623E /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 83F38AC42EF7BEE30002623E /* Release.xcconfig */; };
+		83F38AC62EF7BEE30002623E /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 83F38AC42EF7BEE30002623E /* Release.xcconfig */; };
+		83F38AC72EF7BEE30002623E /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 83F38AC42EF7BEE30002623E /* Release.xcconfig */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		8307C24A2EEDD2AE00747A93 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,11 +36,26 @@
 		8307C23C2EEDD2AD00747A93 /* ScrobbleSync.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScrobbleSync.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8307C2492EEDD2AE00747A93 /* ScrobbleSyncTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScrobbleSyncTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8307C2532EEDD2AE00747A93 /* ScrobbleSyncUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScrobbleSyncUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		83F38ABE2EF7BCDD0002623E /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		83F38AC42EF7BEE30002623E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		83F38AC32EF7BE7C0002623E /* Exceptions for "ScrobbleSync" folder in "ScrobbleSync" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 8307C23B2EEDD2AD00747A93 /* ScrobbleSync */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		8307C23E2EEDD2AD00747A93 /* ScrobbleSync */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				83F38AC32EF7BE7C0002623E /* Exceptions for "ScrobbleSync" folder in "ScrobbleSync" target */,
+			);
 			path = ScrobbleSync;
 			sourceTree = "<group>";
 		};
@@ -75,6 +99,8 @@
 		8307C2332EEDD2AD00747A93 = {
 			isa = PBXGroup;
 			children = (
+				83F38ABE2EF7BCDD0002623E /* Debug.xcconfig */,
+				83F38AC42EF7BEE30002623E /* Release.xcconfig */,
 				8307C23E2EEDD2AD00747A93 /* ScrobbleSync */,
 				8307C24C2EEDD2AE00747A93 /* ScrobbleSyncTests */,
 				8307C2562EEDD2AE00747A93 /* ScrobbleSyncUITests */,
@@ -212,6 +238,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83F38ABF2EF7BCDD0002623E /* Debug.xcconfig in Resources */,
+				83F38AC52EF7BEE30002623E /* Release.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,6 +247,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83F38AC72EF7BEE30002623E /* Release.xcconfig in Resources */,
+				83F38AC02EF7BCDD0002623E /* Debug.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,6 +256,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83F38AC62EF7BEE30002623E /* Release.xcconfig in Resources */,
+				83F38AC12EF7BCDD0002623E /* Debug.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,6 +303,7 @@
 /* Begin XCBuildConfiguration section */
 		8307C25B2EEDD2AE00747A93 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 83F38ABE2EF7BCDD0002623E /* Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -335,6 +368,7 @@
 		};
 		8307C25C2EEDD2AE00747A93 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 83F38AC42EF7BEE30002623E /* Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -392,6 +426,7 @@
 		};
 		8307C25E2EEDD2AE00747A93 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 83F38ABE2EF7BCDD0002623E /* Debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -400,6 +435,7 @@
 				DEVELOPMENT_TEAM = H2Q833KX49;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ScrobbleSync/Info.plist;
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "ScrobbleSync needs access to Apple Music to push your scrobbles to your Last.fm account.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -426,6 +462,7 @@
 		};
 		8307C25F2EEDD2AE00747A93 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 83F38AC42EF7BEE30002623E /* Release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -434,6 +471,7 @@
 				DEVELOPMENT_TEAM = H2Q833KX49;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ScrobbleSync/Info.plist;
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "ScrobbleSync needs access to Apple Music to push your scrobbles to your Last.fm account.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -460,6 +498,7 @@
 		};
 		8307C2612EEDD2AE00747A93 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 83F38ABE2EF7BCDD0002623E /* Debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -482,6 +521,7 @@
 		};
 		8307C2622EEDD2AE00747A93 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 83F38AC42EF7BEE30002623E /* Release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -504,6 +544,7 @@
 		};
 		8307C2642EEDD2AE00747A93 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 83F38ABE2EF7BCDD0002623E /* Debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -524,6 +565,7 @@
 		};
 		8307C2652EEDD2AE00747A93 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 83F38AC42EF7BEE30002623E /* Release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;

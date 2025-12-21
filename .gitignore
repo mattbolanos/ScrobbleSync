@@ -1,0 +1,3 @@
+# Ignore xcconfig files with real secrets, but keep templates
+*.xcconfig
+!*.xcconfig.template

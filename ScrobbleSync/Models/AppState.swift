@@ -4,15 +4,42 @@ import SwiftUI
 
 @Observable
 final class AppState {
+    // MARK: - UserDefaults Keys
+    
+    private enum Keys {
+        static let isOnboarded = "isOnboarded"
+    }
+    
     // MARK: - Services
     
     let musicKitService = MusicKitService()
+    let lastFmService = LastFmService()
     
     // MARK: - Onboarding State
     
-    var isOnboarded: Bool = false
-    var lastfmConnected: Bool = false
-    var lastfmUsername: String = ""
+    var isOnboarded: Bool = UserDefaults.standard.bool(forKey: Keys.isOnboarded) {
+        didSet {
+            UserDefaults.standard.set(isOnboarded, forKey: Keys.isOnboarded)
+        }
+    }
+    
+    // MARK: - Last.fm State (from service)
+    
+    var lastfmConnected: Bool {
+        lastFmService.isAuthenticated
+    }
+    
+    var lastfmUsername: String {
+        lastFmService.username
+    }
+    
+    var isConnectingLastfm: Bool {
+        lastFmService.isAuthenticating
+    }
+    
+    var lastfmStatusDescription: String {
+        lastFmService.statusDescription
+    }
     
     // MARK: - Apple Music State
     
@@ -92,18 +119,19 @@ final class AppState {
         musicKitService.refreshStatus()
     }
     
-    func connectLastfm(username: String = "mattbolanos") {
-        withAnimation(Theme.Animation.spring) {
-            lastfmConnected = true
-            lastfmUsername = username
+    @MainActor
+    func connectLastfm() async {
+        do {
+            try await lastFmService.authenticate()
+        } catch LastFmError.userCancelled {
+            // User cancelled - no action needed
+        } catch {
+            print("❌ [AppState] Last.fm auth failed: \(error)")
         }
     }
     
     func disconnectLastfm() {
-        withAnimation(Theme.Animation.spring) {
-            lastfmConnected = false
-            lastfmUsername = ""
-        }
+        lastFmService.signOut()
     }
     
     @MainActor
@@ -121,8 +149,7 @@ final class AppState {
             isOnboarded = false
             // Note: Apple Music authorization persists and cannot be revoked programmatically
             musicKitService.refreshStatus()
-            lastfmConnected = false
-            lastfmUsername = ""
+            lastFmService.signOut()
             scrobbles = []
             lastSyncDate = nil
         }
