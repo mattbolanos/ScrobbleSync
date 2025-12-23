@@ -38,6 +38,9 @@ struct Scrobble: Identifiable, Hashable {
     let artworkURL: URL?
     let timestamp: Date
     var status: ScrobbleStatus
+    let appleMusicId: String?
+    let duration: TimeInterval?
+    var isEstimated: Bool = false
     
     init(
         id: UUID = UUID(),
@@ -46,7 +49,10 @@ struct Scrobble: Identifiable, Hashable {
         albumName: String,
         artworkURL: URL? = nil,
         timestamp: Date,
-        status: ScrobbleStatus = .success
+        status: ScrobbleStatus = .success,
+        appleMusicId: String? = nil,
+        duration: TimeInterval? = nil,
+        isEstimated: Bool = false
     ) {
         self.id = id
         self.trackName = trackName
@@ -55,6 +61,9 @@ struct Scrobble: Identifiable, Hashable {
         self.artworkURL = artworkURL
         self.timestamp = timestamp
         self.status = status
+        self.appleMusicId = appleMusicId
+        self.duration = duration
+        self.isEstimated = isEstimated
     }
     
     // Relative timestamp formatting

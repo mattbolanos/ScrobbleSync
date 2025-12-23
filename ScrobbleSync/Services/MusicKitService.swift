@@ -57,37 +57,80 @@ final class MusicKitService {
         authorizationStatus = MusicAuthorization.currentStatus
     }
     
+    // MARK: - Constants
+    
+    private enum Constants {
+        static let defaultTrackDuration: TimeInterval = 210 // ~3.5 minutes
+    }
+    
     // MARK: - Data Fetching
     
     /// Fetch recently played tracks from Apple Music
     func fetchRecentlyPlayed() async throws -> [Scrobble] {
-        print("🎵 [MusicKit] Fetching recently played tracks...")
-        print("🎵 [MusicKit] Authorization status: \(authorizationStatus)")
-        
         guard isAuthorized else {
-            print("❌ [MusicKit] Not authorized")
             throw MusicKitError.notAuthorized
         }
         
         let request = MusicRecentlyPlayedRequest<Track>()
         let response = try await request.response()
         
-        print("🎵 [MusicKit] Received \(response.items.count) tracks")
+        // Convert to array for processing
+        let tracks = Array(response.items)
         
-        let scrobbles = response.items.compactMap { track in
-            print("  - \(track.title) by \(track.artistName), lastPlayed: \(track.lastPlayedDate?.description ?? "nil")")
+        // Estimate timestamps for tracks with nil lastPlayedDate
+        let estimatedTimestamps = estimateTimestamps(for: tracks)
+        
+        let scrobbles = tracks.enumerated().compactMap { (index, track) -> Scrobble? in
+            let timestamp = estimatedTimestamps[index]
+            let trackDuration = track.duration
+            
             return Scrobble(
                 trackName: track.title,
                 artistName: track.artistName,
                 albumName: track.albumTitle ?? "Unknown Album",
-                artworkURL: track.artwork?.url(width: 100, height: 100),
-                timestamp: track.lastPlayedDate ?? Date(),
-                status: .pending
+                artworkURL: track.artwork?.url(width: 300, height: 300),
+                timestamp: track.lastPlayedDate ?? timestamp,
+                status: .pending,
+                appleMusicId: track.id.rawValue,
+                duration: trackDuration,
+                isEstimated: track.lastPlayedDate == nil,
             )
         }
         
-        print("🎵 [MusicKit] Returning \(scrobbles.count) scrobbles")
         return scrobbles
+    }
+    
+    // MARK: - Timestamp Estimation
+    
+    /// Estimate timestamps for tracks with nil lastPlayedDate values.
+    /// Works backwards from known timestamps using track durations.
+    private func estimateTimestamps(for tracks: [Track]) -> [Date] {
+        var timestamps: [Date] = []
+        
+        guard !tracks.isEmpty else { return [] }
+        
+        // Start at now minus the duration of the first track
+        let firstTrackDuration = tracks.first?.duration ?? Constants.defaultTrackDuration
+        var currentEstimate = Date().addingTimeInterval(-firstTrackDuration)
+        
+        // MusicKit returns tracks ordered by recency (most recent first)
+        // We process forward through the array, using known dates as anchors
+        // and estimating backwards for nil dates
+        
+        for track in tracks {
+            if let actualDate = track.lastPlayedDate {
+                // Use the actual date as an anchor point
+                currentEstimate = actualDate
+            }
+            
+            timestamps.append(currentEstimate)
+            
+            // Move backwards in time for the next track
+            let duration = track.duration ?? Constants.defaultTrackDuration
+            currentEstimate = currentEstimate.addingTimeInterval(-duration)
+        }
+        
+        return timestamps
     }
 }
 
